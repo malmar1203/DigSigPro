@@ -11,8 +11,8 @@ lib.generate_signal.restype = np.ctypeslib.ndpointer(dtype=np.float64, shape=(li
 lib.compute_fft.argtypes=[np.ctypeslib.ndpointer(dtype=np.float64)]
 lib.compute_fft.restype = np.ctypeslib.ndpointer(dtype=np.float64, shape=(2*lib.get_num_points(),)) 
 
-lib.free_signal.argtypes = [np.ctypeslib.ndpointer(dtype=np.float64)]
-lib.free_signal.restype = None
+lib.free_memory.argtypes = [np.ctypeslib.ndpointer(dtype=np.float64)]
+lib.free_memory.restype = None
 
 lib.get_num_points.argtypes = []
 lib.get_num_points.restype = ctypes.c_int
@@ -54,4 +54,5 @@ def visualize_signal_and_spectrum(y_real, Y):
 
 if __name__ == "__main__":
     visualize_signal_and_spectrum(y_real, Y)
-    lib.free_signal(y_real)
+    lib.free_memory(y_real)
+    lib.free_memory(fft_res)

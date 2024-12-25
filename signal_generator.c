@@ -26,12 +26,11 @@ double* compute_fft(double* y) {
         for(int j=0; j<n; ++j)
         {
             double angle = 2* M_PI *i*j/n;
-            sum += input[j] *cexp(-I*angle);  
+            sum += y[j] *cexp(-I*angle);  
         }
 
         output[2*i] = creal(sum);
         output[2*i+1] = cimag(sum);
-
     }
 
     return output; 
@@ -63,8 +62,8 @@ int get_num_points() {
     return NUM_POINTS;
 }
 
-void free_signal(double* signal)
+void free_memory(double* pointer)
 {
-    free(signal);
+    free(pointer);
 }
 
