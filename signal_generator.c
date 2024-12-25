@@ -4,20 +4,39 @@
 #include <math.h>
 #include <complex.h>
 
-#define NUM_POINTS 100
+#define NUM_POINTS 128 
 
-double* compute_fft(double* y) {
-    int n = NUM_POINTS;
-    double complex input[n];
-    double * output = (double*)malloc(2*n*sizeof(double));
-    if(output == NULL){
-        fprintf(stderr, "Memory allocation failed\n");
+
+double* compute_dft(const double * y){
+    int n =NUM_POINTS;
+    double* output = (double*) malloc (2*n*sizeof(double));
+    if(output==NULL)
+    {
+        fprintf(stderr,"Memory allocation failed\n");
         exit(1);
     }
 
     for(int i=0; i<n; ++i)
     {
-        input[i] = y[i] + I*0.0; 
+        double complex sum = 0.0;
+        for(int j=0; j<n; ++j)
+        {
+            double angle = 2*M_PI*i*j/n;
+            sum+= y[j]*cexp(-I*angle);
+        }
+        output[2*i] = creal(sum);
+        output[2*i+1] =cimag(sum);
+    }
+
+    return output;
+}
+
+double* compute_fft(double* y) {
+    int n = NUM_POINTS;
+    double * output = (double*)malloc(2*n*sizeof(double));
+    if(output == NULL){
+        fprintf(stderr, "Memory allocation failed\n");
+        exit(1);
     }
 
     for(int i=0; i<n; ++i)
@@ -49,10 +68,12 @@ double* generate_signal() {
         y[i] = sin(i * 0.1);  // Example signal: sine wave
     }
 
+    /*
     for(int j = 0; j < NUM_POINTS; ++j){
         printf("%f", y[j]);
     }
     printf("\n");
+    */
 
     return y;
 }
