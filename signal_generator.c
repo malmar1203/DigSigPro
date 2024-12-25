@@ -52,6 +52,22 @@ double* compute_fft(double* y) {
         output[2*i+1] = cimag(sum);
     }
 
+    FILE * file =fopen("web/fft_data.csv", "w");
+    if(file == NULL)
+    {
+        fprintf(stderr, "Error opening file for writing.\n");
+        exit(1);
+    }
+
+    fprintf(file,"frequency,magnitude\n");
+    for(int i=0; i<n; ++i)
+    {
+        double magnitude =sqrt(output[2*i]*output[2*i]+ output[2*i+1]* output[2*i+1]);
+        fprintf(file,"%d,%lf\n",i,magnitude);
+    }
+
+    fclose(file);
+
     return output; 
 }
 
@@ -64,16 +80,24 @@ double* generate_signal() {
         exit(1);
     }
 
-    for (int i = 0; i < NUM_POINTS; ++i) {
-        y[i] = sin(i * 0.1);  // Example signal: sine wave
+    FILE * file = fopen("web/signal_data.csv", "w");
+    if(file==NULL)
+    {
+        fprintf(stderr, "Error opening file for writing\n");
+        exit(1);
     }
 
-    /*
-    for(int j = 0; j < NUM_POINTS; ++j){
-        printf("%f", y[j]);
+    fprintf(file,"x,y\n");
+
+    for (int i = 0; i < NUM_POINTS; ++i) {
+        y[i] = 1.5*sin(i * 0.1 + M_PI/4)/(0.1*i+0.1)
+            +sin(i*0.1+M_PI/2)/(0.1*i+0.1)
+            -sqrt(0.1*i*i)
+            ;
+        fprintf(file,"%d,%lf\n",i,y[i]);
     }
-    printf("\n");
-    */
+
+    fclose(file);
 
     return y;
 }
