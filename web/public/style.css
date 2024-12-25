@@ -1,0 +1,15 @@
+
+body{
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+h1{
+    color:#333;
+}
+
+#signal, #fft{
+    display: inline-block;
+    width:45%;
+    margin:20px;
+}
