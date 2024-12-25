@@ -6,9 +6,11 @@ LIBRARY = libsiggen.so
 
 SRC =signal_generator.c
 
-PYTHON_SCRIPT = visualize_signal.py
+all: $(LIBRARY) run
 
-lib: $(LIBRARY) $(SRC)
+PYTHON_SCRIPT = visualize_signal_and_spectrum.py
+
+$(LIBRARY): $(SRC)
 	$(CC) $(CFLAGS) -o $(LIBRARY) $(SRC) $(LDFLAGS)
 
 run: $(LIBRARY)
